@@ -1,3 +1,21 @@
+#     DGA does capture-recapture estimation using decomposable graphical models
+#
+#     Copyright (C) 2014, Human Rights Data Analysis Group (HRDAG)
+#     https://hrdag.org
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 library(R.utils)
 library(network)
 #functions to do the madigan + york bma routine
@@ -19,7 +37,7 @@ integer.base.b <- function(x, b=2){
     if(any(is.na(xi) | ((x-xi)!=0)))
       print(list(ERROR="x not integer", x=x))
     N <- length(x)
-    xMax <- max(x)	
+    xMax <- max(x)
     ndigits <- (floor(logb(xMax, base=2))+1)
     Base.b <- array(NA, dim=c(N, ndigits))
     for(i in 1:ndigits){#i <- 1
@@ -38,11 +56,11 @@ MakeCompMatrix <- function(p, delta, Y){
     D <- c(apply(Y, inds, sum))
     Dmat <- t(matrix(D, ncol = length(Nmissing), nrow = length(D)))
     Dmat[,1] <- Dmat[,1] + Nmissing
-    
+
     #compute alpha
     alpha <- rep(delta * 2^(p - sum(bins[i,])), ncol(Dmat))
-    
-    
+
+
     compLMLs[i,] <- CompLogML(Dmat, alpha)
   }
   return(compLMLs)
@@ -61,63 +79,63 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior = NULL){
   #Nmissing is the set of possible uncounted cases
   #delta is the prior weight for each cell
   #graphs are all of the decomposable graphs for p lists. These are pre-computed for p = 3, 4, 5.
-  
+
   #model x estimate weights go in here
   modNweights <- matrix(nrow = length(graphs), ncol = length(Nmissing))
-  
+
   #get number of lists
   p <- length(dim(Y))
-  
+
   #get all of the graphs for p lists
   #would like to load this automatically based on p... this will be clunky now. When we package-ify this, it should be cleaner, so for now, I'll leave it as an input.
-  
-  
+
+
   #first pre-compute the matrix of component-wise LMLs
   compMat <- MakeCompMatrix(p, delta, Y) # all but the last graph (the one that doesn't really matter) match with matlab code for 3 lists
-  
+
   j <- 1
   for(graph in graphs){#loop over all possible models
     #graph$C cliques of the graph
     #graph$S separators
     binC <-t(sapply(graph$C, tmpfun, p = p))
-    decC <- apply(t(binC)*rev(2^(0:(p-1))), 2, sum) 
+    decC <- apply(t(binC)*rev(2^(0:(p-1))), 2, sum)
     compMats <- compMat[decC,]
     if(!is.null(nrow(compMats))){
     cliqueML <- apply(compMats, 2, sum)
     }else{cliqueML <- compMats}
-    
+
     if(!is.null(graph$S)){
       binS <-t(sapply(graph$S, tmpfun, p = p))
-      decS <- apply(t(binS)*rev(2^(0:(p-1))), 2, sum) 
-      
+      decS <- apply(t(binS)*rev(2^(0:(p-1))), 2, sum)
+
       compMats <- compMat[decS,]
       if(!is.null(nrow(compMats))){
         sepML <- apply(compMats, 2, sum)
       }else{sepML <- compMats}
     }else{sepML <- 0; decS <- NULL}
-    
+
     nsubgraphs <- length(decC) - length(decS)
     #nsubgraph.*(gammaln(sum(alpha))-gammaln(N+sum(alpha)));
-    
+
     alpha <- rep(delta, length(Y))
     modNweights[j,] <- (cliqueML - sepML + nsubgraphs*(lgamma(sum(alpha)) - lgamma(Nmissing + sum(Y) + sum(alpha))))
     j <- j + 1
   }
 
-  
+
   #add on multinomial coefficient
   multicoef <- lgamma(Nmissing + sum(Y) + 1) - sum(lgamma(Y[-1] + 1)) - lgamma(Nmissing + 1)
   #multicoef <- lgamma(Nmissing + sum(Y) ) - sum(lgamma(Y[-1] )) - lgamma(Nmissing )
-  
+
   modNweights <- t(t(modNweights) + multicoef)
-  
+
   #add on prior
   if(is.null(logprior)){
   logprior <- -log(sum(Y) + Nmissing)}
-  
+
   modNweights <- t(t(modNweights) + logprior)
-  
-  
+
+
   modNweights <- modNweights - max(modNweights)
   weights <- exp(modNweights)
   weights <- weights/sum(weights)
@@ -125,7 +143,7 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior = NULL){
 }
 
 plotPosteriorN <- function(weights, N){
-  #this function 
+  #this function
   plot(N, apply(weights, 2, sum), type = 'l', col = 'black', lwd = 3, ylab = "Posterior Probability of N", xlab = "N", ylim=c(0, 1.25*max(apply(weights, 2, sum))))
   title("Posterior Summary")
   wts <- apply(weights, 1, sum)
@@ -144,7 +162,7 @@ plotTopModels <- function(graphs, weights, p, how.many = 3){
     Adj <- makeAdjMatrix(graph,p)
     rownames(Adj) <- c("one", "two", "three")
     net <- as.network(Adj)
-    plot(net, main = paste("posterior prob ", round(modelWeights[or[i]], 3))) 
+    plot(net, main = paste("posterior prob ", round(modelWeights[or[i]], 3)))
     #still doesn't plot names, need to figure out how to get it to do this
   }
 }
@@ -160,12 +178,12 @@ makeAdjMatrix <- function(graph, p){
   }
   for(i in 1:length(graph$S)){
     if(length(graph$S[[i]])>1){
-      
+
       combns <- combn(graph$S[[i]],2)
       Adj[combns[1], combns[2]] <- 1
     }
   }
-  
+
   Adj <- Adj + t(Adj)
   Adj[Adj>1] <- 1
   return(Adj)

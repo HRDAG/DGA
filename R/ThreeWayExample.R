@@ -1,3 +1,23 @@
+#     DGA does capture-recapture estimation using decomposable graphical models
+#
+# Copyright (C) 2014, Human Rights Data Analysis Group (HRDAG)
+#     https://hrdag.org
+#
+# This file is part of DGA.
+#
+# snap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# snap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with DGA.  If not, see <http://www.gnu.org/licenses/>.
+
 #test madigan and york 3 way spina bifida example
 source("~/Dropbox (Personal)/Projects/Capture-Recapture/DGA/R/src/BMAfunctions.R")
 #multcoef <-  lgamma(apply(D, 1, sum) + delta) - apply(lgamma(D[,-1] +delta), 1, sum) - lgamma(D[,1] + 1)
