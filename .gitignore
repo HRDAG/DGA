@@ -1,0 +1,46 @@
+# Images #
+###################
+*.jpg
+*.jpeg
+*.png
+*.img
+*.tiff
+*.gif
+*.svg
+
+# Data #
+##################
+*.mat
+*.dat
+
+
+# for HRDAG.SV2, with snapper
+# PB, 2014.04.18
+
+# Ignore all blobstores
+.blobstore/
+
+# Ignore ipynb checkpoints
+.ipynb_checkpoints/
+
+# Ignore IDE generated files
+.idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# ignore tmp files
+\~*
+*~
+
+.Rhistory
+
+# ignore snap metadata
+.snap*
+
+# ignore the data directories
+input/
+output/
+frozen/
+
