@@ -2,22 +2,18 @@
 \alias{tmpfun}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
-}
+A helper function.}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+A helper function.}
 \usage{
 tmpfun(x, p)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-%%     ~~Describe \code{x} here~~
-}
+stuff}
   \item{p}{
-%%     ~~Describe \code{p} here~~
-}
+things}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~

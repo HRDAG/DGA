@@ -2,39 +2,30 @@
 \alias{CompLogML}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
-}
+A helper function for BMAfunction}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+ This function computes the log marginal likelihood of each fully connected sub-graph of the $p$ lists.}
 \usage{
 CompLogML(D, delta)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{D}{
-%%     ~~Describe \code{D} here~~
-}
+A marginal table of \code{Y}}
   \item{delta}{
-%%     ~~Describe \code{delta} here~~
-}
+The prior hyper parameter for  the Dirichlet distribution.}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+The log marginal likelihood of the marginal table.
 }
 \references{
-%% ~put references to the literature/web site here ~
-}
+Madigan, David, and Jeremy C. York. "Bayesian methods for estimation of the size of a closed population."  Biometrika 84.1 (1997): 19-31.}
 \author{
-%%  ~~who you are~~
-}
+James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
+
 \note{
 %%  ~~further notes~~
 }
@@ -59,5 +50,6 @@ function (D, delta)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{capture-recapture }
+\keyword{ multiple systems estimation}% __ONLY ONE__ keyword per line
+\keyword{ BMA }

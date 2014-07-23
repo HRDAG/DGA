@@ -2,42 +2,33 @@
 \alias{MakeCompMatrix}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
-}
+Component-wise matrix of log marginal likelihoods}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+Calls CompLogML to create a matrix of number of possible components by length(Nmissing) log marginal likelihoods. Calculates the log marginal likehood of each possible marginal table for every value of Nmissing. }
 \usage{
 MakeCompMatrix(p, delta, Y)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{p}{
-%%     ~~Describe \code{p} here~~
-}
+Number of lists}
   \item{delta}{
-%%     ~~Describe \code{delta} here~~
-}
+Prior hyperparameter of the Dirichlet distribution.}
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
-}
+The $2^k$ matrix of list intersection counts.}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A matrix of log marginal likelihoods.
 }
 \references{
 %% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
-}
+James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
+
 \note{
 %%  ~~further notes~~
 }

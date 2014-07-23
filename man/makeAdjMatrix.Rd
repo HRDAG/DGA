@@ -2,26 +2,22 @@
 \alias{makeAdjMatrix}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
-}
+Adjacency Matrix Converter}
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+Converts a cliques and separators into an adjacency matrix representation of a graph.}
 \usage{
 makeAdjMatrix(graph, p)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{graph}{
-%%     ~~Describe \code{graph} here~~
+All the graphs.
 }
   \item{p}{
-%%     ~~Describe \code{p} here~~
-}
+The number of lists.}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+This is only a helper function to use in the experimental plotting function PlotTopGraphs.}
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
@@ -33,8 +29,7 @@ makeAdjMatrix(graph, p)
 %% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
-}
+James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
 \note{
 %%  ~~further notes~~
 }

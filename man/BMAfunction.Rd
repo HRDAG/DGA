@@ -2,50 +2,37 @@
 \alias{BMAfunction}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
+Function that performs Bayesian model averaging for capture-recapture
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+This function averages over all decomposable graphical models for $p$ lists. }
 \usage{
 BMAfunction(Y, Nmissing, delta, graphs, logprior = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Y}{
-%%     ~~Describe \code{Y} here~~
+\code{Y} are the list intersection counts, arranged in a $2^p$ array. Let $i = i_1 i_2 … i_p$ represent a list intersection, where $i_j = 2$ indicates inclusion on list $j$ and $i_j = 1$ indicates exclusion from list $j$. The $i$th cell of the array is then the number of individuals that fall into list intersection $i$. For example, if $i_1 = 1$, $i_2 = 2$, and $i_3 = 2$ for $p=3$ lists, then $Y_{121}$ contains the count of the number of individuals that did not appear on list 1 and did appear on lists 2 and 3. Although estimating $Y_{00…0}$ is the goal of this code, the $00…0$th cell should be set to 0.  
 }
   \item{Nmissing}{
-%%     ~~Describe \code{Nmissing} here~~
+A vector of all possible values for the number of individuals that appear on no list. 
+
 }
   \item{delta}{
-%%     ~~Describe \code{delta} here~~
-}
-  \item{graphs}{
-%%     ~~Describe \code{graphs} here~~
-}
+The hyper-parameter for the Dirichlet distribution. A smaller value indicates less prior information.}
+  \item{graphs}{A pre-computed list of all decomposable graphical models for p lists. Need to run data(graphsp), where p is the number of lists, and use this as an input. See example.}
+  
   \item{logprior}{
-%%     ~~Describe \code{logprior} here~~
-}
+The log of the prior probability of each value in Nmissing. If left blank, this will default to the -log(Nmissing).}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+This is the main function in this package that calls the other functions listed. This is probably the one you want to use.}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
+This function returns a matrix of weights, where rows correspond to models and columns correspond to values of Nmissing. Thus, the $ij$th entry of the output matrix is the posterior probability of the $i$th model and the $j$th entry of $Nmissing$. Row sums return posterior probabilities by model. Column sums return posterior probabilities by value of  Nmissing.}
 \references{
-%% ~put references to the literature/web site here ~
-}
+Madigan, David, and Jeremy C. York. "Bayesian methods for estimation of the size of a closed population."  Biometrika 84.1 (1997): 19-31.}
 \author{
-%%  ~~who you are~~
-}
+James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
 \note{
-%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -53,64 +40,40 @@ BMAfunction(Y, Nmissing, delta, graphs, logprior = NULL)
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (Y, Nmissing, delta, graphs, logprior = NULL) 
-{
-    modNweights <- matrix(nrow = length(graphs), ncol = length(Nmissing))
-    p <- length(dim(Y))
-    compMat <- MakeCompMatrix(p, delta, Y)
-    j <- 1
-    for (graph in graphs) {
-        binC <- t(sapply(graph$C, tmpfun, p = p))
-        decC <- apply(t(binC) * rev(2^(0:(p - 1))), 2, sum)
-        compMats <- compMat[decC, ]
-        if (!is.null(nrow(compMats))) {
-            cliqueML <- apply(compMats, 2, sum)
-        }
-        else {
-            cliqueML <- compMats
-        }
-        if (!is.null(graph$S)) {
-            binS <- t(sapply(graph$S, tmpfun, p = p))
-            decS <- apply(t(binS) * rev(2^(0:(p - 1))), 2, sum)
-            compMats <- compMat[decS, ]
-            if (!is.null(nrow(compMats))) {
-                sepML <- apply(compMats, 2, sum)
-            }
-            else {
-                sepML <- compMats
-            }
-        }
-        else {
-            sepML <- 0
-            decS <- NULL
-        }
-        nsubgraphs <- length(decC) - length(decS)
-        alpha <- rep(delta, length(Y))
-        modNweights[j, ] <- (cliqueML - sepML + nsubgraphs * 
-            (lgamma(sum(alpha)) - lgamma(Nmissing + sum(Y) + 
-                sum(alpha))))
-        j <- j + 1
-    }
-    multicoef <- lgamma(Nmissing + sum(Y) + 1) - sum(lgamma(Y[-1] + 
-        1)) - lgamma(Nmissing + 1)
-    modNweights <- t(t(modNweights) + multicoef)
-    if (is.null(logprior)) {
-        logprior <- -log(sum(Y) + Nmissing)
-    }
-    modNweights <- t(t(modNweights) + logprior)
-    modNweights <- modNweights - max(modNweights)
-    weights <- exp(modNweights)
-    weights <- weights/sum(weights)
-    return(weights)
-  }
+\examples{
+#### 5 list example from M & Y ##########
+delta <- .5
+Y = c(0,27,37,19,4,4,1,1,97,22,37,25,2,1,3,5,83,36,34,18,3,5,0,2,30,5,23,8,0,3,0,2)
+Y <- array(Y, dim=c(2,2,2,2,2))
+Nmissing <- 1:300
+N <- Nmissing + sum(Y)
+data(graphs5)
+weights <- BMAfunction(Y,  Nmissing, delta, graphs)
+plotPosteriorN(weights, N)
+ 
+##### 3 list example from M & Y #######
+Y <- c(0, 60, 49, 4, 247, 112, 142, 12)
+Y <- array(Y, dim=c(2,2,2))
+
+delta <- 1
+a <- 13.14
+b <- 55.17
+
+
+Nmissing <- 1:300
+N <- Nmissing + sum(Y)
+
+logprior <- N*log(b) - (N + a)*log(1 + b)  + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
+
+data(graphs3)
+weights <- BMAfunction(Y,  Nmissing, delta, graphs, logprior)
+plotPosteriorN(weights, N)
+
 }
+
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ capture-recapture }
+\keyword{ multiple systems estimation }% __ONLY ONE__ keyword per line
+\keyword{ BMA }

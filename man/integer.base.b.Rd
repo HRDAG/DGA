@@ -1,9 +1,8 @@
 \name{integer.base.b}
 \alias{integer.base.b}
-%- Also NEED an '\alias' for EACH other topic documented here.
+Helper function 
 \title{
-%%  ~~function to do ... ~~
-}
+Takes a decimal number and converts it to base b}
 \description{
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
@@ -13,28 +12,20 @@ integer.base.b(x, b = 2)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-%%     ~~Describe \code{x} here~~
+A number.
 }
   \item{b}{
-%%     ~~Describe \code{b} here~~
-}
+The desired base.}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+This was harvested from the internet here: https://stat.ethz.ch/pipermail/r-help/2003-September/038978.html. Posted by Spencer Graves. }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A number in base b.
 }
 \references{
-%% ~put references to the literature/web site here ~
-}
+https://stat.ethz.ch/pipermail/r-help/2003-September/038978.html}
 \author{
-%%  ~~who you are~~
-}
+Spencer Graves}
 \note{
 %%  ~~further notes~~
 }
@@ -70,5 +61,5 @@ function (x, b = 2)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ binary}
+\keyword{ decimal }% __ONLY ONE__ keyword per line

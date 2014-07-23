@@ -80,16 +80,14 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior = NULL){
   #delta is the prior weight for each cell
   #graphs are all of the decomposable graphs for p lists. These are pre-computed for p = 3, 4, 5.
 
-  #model x estimate weights go in here
-  modNweights <- matrix(nrow = length(graphs), ncol = length(Nmissing))
-
   #get number of lists
   p <- length(dim(Y))
 
-  #get all of the graphs for p lists
-  #would like to load this automatically based on p... this will be clunky now. When we package-ify this, it should be cleaner, so for now, I'll leave it as an input.
-
-
+  
+  #model x estimate weights go in here
+  modNweights <- matrix(nrow = length(graphs), ncol = length(Nmissing))
+  
+  
   #first pre-compute the matrix of component-wise LMLs
   compMat <- MakeCompMatrix(p, delta, Y) # all but the last graph (the one that doesn't really matter) match with matlab code for 3 lists
 
@@ -133,7 +131,7 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior = NULL){
   if(is.null(logprior)){
   logprior <- -log(sum(Y) + Nmissing)}
 
-  modNweights <- t(t(modNweights) + logprior)
+  modNweights <- t(t(modNweights) + logprior) #need to put this back in!
 
 
   modNweights <- modNweights - max(modNweights)

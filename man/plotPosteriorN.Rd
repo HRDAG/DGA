@@ -1,33 +1,24 @@
 \name{plotPosteriorN}
 \alias{plotPosteriorN}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-%%  ~~function to do ... ~~
-}
-\description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
-}
+A function to visualize your results.}
+\description{b
+This function plots the model averaged posterior distribution of the total number of elements (the  solid line) and the contribution to the posteriof of each of the models (dotted lines)}
 \usage{
 plotPosteriorN(weights, N)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{weights}{
-%%     ~~Describe \code{weights} here~~
-}
+The output of BMAfunction.}
   \item{N}{
-%%     ~~Describe \code{N} here~~
-}
+N + Nmissing. Or, if you prefer, just Nmissing. The former shows the posterior distribution of the total population size; the latter shows the posterior distribution of the number of missing elements.}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A plot.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -45,9 +36,36 @@ plotPosteriorN(weights, N)
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+##### 5 list example from M & Y #######
+
+delta <- .5
+Y = c(0,27,37,19,4,4,1,1,97,22,37,25,2,1,3,5,83,36,34,18,3,5,0,2,30,5,23,8,0,3,0,2)
+Y <- array(Y, dim=c(2,2,2,2,2))
+Nmissing <- 1:300
+N <- Nmissing + sum(Y) 
+data(graphs5)
+weights <- BMAfunction(Y,  Nmissing, delta, graphs)
+plotPosteriorN(weights, N)
+
+
+##### 3 list example from M & Y #######
+Y <- c(0, 60, 49, 4, 247, 112, 142, 12)
+Y <- array(Y, dim=c(2,2,2))
+
+delta <- 1
+a <- 13.14
+b <- 55.17
+
+
+Nmissing <- 1:300
+N <- Nmissing + sum(Y)
+
+logprior <- N*log(b) - (N + a)*log(1 + b)  + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
+
+data(graphs3)
+weights <- BMAfunction(Y,  Nmissing, delta, graphs, logprior)
+plotPosteriorN(weights, N)
+
 
 ## The function is currently defined as
 function (weights, N) 
