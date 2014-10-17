@@ -47,7 +47,7 @@ integer.base.b <- function(x, b=2){
     if(N ==1) Base.b[1, ] else Base.b
   }
 
-MakeCompMatrix <- function(p, delta, Y){
+MakeCompMatrix <- function(p, delta, Y, Nmissing){
   #pre-computes each component's  LogML
   compLMLs <- matrix(0,nrow = 2^p-1, ncol = length(Nmissing))
   bins <- integer.base.b(1:(2^p-1), 2)
@@ -82,14 +82,16 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior = NULL){
 
   #get number of lists
   p <- length(dim(Y))
-
+  
+  #set the missing cell to be 0
+  Y[1] <- 0 
   
   #model x estimate weights go in here
   modNweights <- matrix(nrow = length(graphs), ncol = length(Nmissing))
   
   
   #first pre-compute the matrix of component-wise LMLs
-  compMat <- MakeCompMatrix(p, delta, Y) # all but the last graph (the one that doesn't really matter) match with matlab code for 3 lists
+  compMat <- MakeCompMatrix(p, delta, Y, Nmissing) # all but the last graph (the one that doesn't really matter) match with matlab code for 3 lists
 
   j <- 1
   for(graph in graphs){#loop over all possible models
