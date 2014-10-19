@@ -73,14 +73,14 @@ tmpfun <- function(x,p){
 }
 
 
-BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, prior.model.probs=NULL, normalize=TRUE){
+BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.model.weights=NULL, normalize=TRUE){
   #function to madigan + york style bma
   #Y is the array of counts.. should be dimension 2x2x2 (if p = 3)
   #Nmissing is the set of possible uncounted cases
   #delta is the prior weight for each cell
   #graphs are all of the decomposable graphs for p lists. These are pre-computed for p = 3, 4, 5.
   #normalize indicates whether to normalize the count/model weights prior to output. Default is to normalize, this is mostly used for development.
-  #prior.model.probs: a vector of prior model weights. Should be the same length as length(graphs)
+  #log.prior.model.weights: a vector of prior model weights. Should be the same length as length(graphs)
 
   #get number of lists
   p <- length(dim(Y))
@@ -136,6 +136,10 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, prior.model.p
   logprior <- -log(sum(Y) + Nmissing)}
 
   modNweights <- t(t(modNweights) + logprior) 
+
+  if(!is.null(log.prior.model.weights)){
+    modNweights <- modNweights + log.prior.model.weights
+  }
 
   if(normalize){
     modNweights <- modNweights - max(modNweights)
