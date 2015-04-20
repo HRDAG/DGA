@@ -196,3 +196,12 @@ makeAdjMatrix <- function(graph, p){
   return(Adj)
 }
 
+BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.model.weights=NULL, normalize=TRUE){
+#This function is a facade for bma.cr. 
+  warning("This function is will be removed in the next version. Please use bma.cr() instead.")
+  weights <- BMAfunction(Y, Nmissing, delta, graphs, logprior=logprior, log.prior.model.weights=log.prior.model.weights,
+                          normalize=normalize)
+  return(weights)
+
+}
+
