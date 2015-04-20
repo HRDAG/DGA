@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-library(R.utils)
-library(network)
+#library(R.utils)
+#library(network)
 #functions to do the madigan + york bma routine
 
 
@@ -26,7 +26,7 @@ CompLogML <- function(D, delta){
   #operates on rows
   #need to test this against the matlab code still
   #D should be the "squished" marginal table
-  #delt is the prior cell counts
+  #delta is the prior cell counts
   #if (dim(D)[2]%%2 != 0){ print('problem! This is not a marginal table!')}
   out <- apply(lgamma(D + delta), 1, sum) - apply(lgamma(D*0 + delta), 1, sum)
   return(out)
@@ -59,8 +59,6 @@ MakeCompMatrix <- function(p, delta, Y, Nmissing){
 
     #compute alpha
     alpha <- rep(delta * 2^(p - sum(bins[i,])), ncol(Dmat))
-
-
     compLMLs[i,] <- CompLogML(Dmat, alpha)
   }
   return(compLMLs)
@@ -73,7 +71,7 @@ tmpfun <- function(x,p){
 }
 
 
-BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.model.weights=NULL, normalize=TRUE){
+bma.cr <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.model.weights=NULL, normalize=TRUE){
   #function to madigan + york style bma
   #Y is the array of counts.. should be dimension 2x2x2 (if p = 3)
   #Nmissing is the set of possible uncounted cases
@@ -103,7 +101,7 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.mod
     decC <- apply(t(binC)*rev(2^(0:(p-1))), 2, sum)
     compMats <- compMat[decC,]
     if(!is.null(nrow(compMats))){
-    cliqueML <- apply(compMats, 2, sum)
+      cliqueML <- apply(compMats, 2, sum)
     }else{cliqueML <- compMats}
 
     if(!is.null(graph$S)){
@@ -151,30 +149,30 @@ BMAfunction <- function(Y, Nmissing, delta, graphs, logprior=NULL, log.prior.mod
   return(weights)
 }
 
-plotPosteriorN <- function(weights, N){
+plotPosteriorN <- function(weights, N, main=NULL){
   #this function
   plot(N, apply(weights, 2, sum), type = 'l', col = 'black', lwd = 3, ylab = "Posterior Probability of N", xlab = "N", ylim=c(0, 1.25*max(apply(weights, 2, sum))))
-  title("Posterior Summary")
+  title(main)
   wts <- apply(weights, 1, sum)
   for(i in 1:nrow(weights)){
-    lines(Nmissing + sum(Y), weights[i,], lwd = wts[i]*3, lty = 'dashed')
+    lines(N, weights[i,], lwd = wts[i]*3, lty = 'dashed')
   }
-  legend("topright", legend = c("Total Posterior Probability", "One Model's Posterior Probability"), lty  = c(1, 2), cex = .75)
+  legend("topright", legend = c("Averaged Post. Prob.", "Post. Prob. By Model"), lty  = c(1, 2), cex = .75)
 }
 
-plotTopModels <- function(graphs, weights, p, how.many = 3){
-  modelWeights <- apply(weights, 1, sum)
-  or <- rev(order(modelWeights))
-  par(mfrow=c(how.many,1))
-  for(i in 1:how.many){
-    graph <- graphs[[or[i]]]
-    Adj <- makeAdjMatrix(graph,p)
-    rownames(Adj) <- c("one", "two", "three")
-    net <- as.network(Adj)
-    plot(net, main = paste("posterior prob ", round(modelWeights[or[i]], 3)))
-    #still doesn't plot names, need to figure out how to get it to do this
-  }
-}
+#plotTopModels <- function(graphs, weights, p, how.many = 3){
+#  modelWeights <- apply(weights, 1, sum)
+#  or <- rev(order(modelWeights))
+#  par(mfrow=c(how.many,1))
+#  for(i in 1:how.many){
+#    graph <- graphs[[or[i]]]
+#    Adj <- makeAdjMatrix(graph,p)
+#    rownames(Adj) <- c("one", "two", "three")
+#    net <- as.network(Adj)
+#    plot(net, main = paste("posterior prob ", round(modelWeights[or[i]], 3)))
+#    #still doesn't plot names, need to figure out how to get it to do this
+#  }
+#}
 
 makeAdjMatrix <- function(graph, p){
   Adj <- matrix(0, nrow = p, ncol = p)

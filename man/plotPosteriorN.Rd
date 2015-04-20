@@ -1,40 +1,25 @@
 \name{plotPosteriorN}
 \alias{plotPosteriorN}
-\title{
-A function to visualize your results.}
-\description{b
-This function plots the model averaged posterior distribution of the total number of elements (the  solid line) and the contribution to the posteriof of each of the models (dotted lines)}
+\title{Plots Posterior Distribution of Nmissing}
+\description{
+Plots the model averaged posterior distribution of the total number of elements (the  solid line) and the contribution to the posterior of each of the models (dotted lines)}
 \usage{
-plotPosteriorN(weights, N)
+plotPosteriorN(weights, N, main=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{weights}{
-The output of BMAfunction.}
-  \item{N}{
-N + Nmissing. Or, if you prefer, just Nmissing. The former shows the posterior distribution of the total population size; the latter shows the posterior distribution of the number of missing elements.}
+  \item{weights}{The output of BMAfunction.}
+  \item{N}{N + Nmissing. Or, if you prefer, just Nmissing. The former shows the posterior distribution of the total population size; the latter shows the posterior distribution of the number of missing elements.}
+  \item{main}{the title of the plot}
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 A plot.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
+Kristian Lum \email{kl@hrdag.org}}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
 ##### 5 list example from M & Y #######
 
@@ -44,7 +29,7 @@ Y <- array(Y, dim=c(2,2,2,2,2))
 Nmissing <- 1:300
 N <- Nmissing + sum(Y) 
 data(graphs5)
-weights <- BMAfunction(Y,  Nmissing, delta, graphs)
+weights <- bma.cr(Y,  Nmissing, delta, graphs5)
 plotPosteriorN(weights, N)
 
 
@@ -63,7 +48,7 @@ N <- Nmissing + sum(Y)
 logprior <- N*log(b) - (N + a)*log(1 + b)  + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
 
 data(graphs3)
-weights <- BMAfunction(Y,  Nmissing, delta, graphs, logprior)
+weights <- bma.cr(Y,  Nmissing, delta, graphs3, logprior)
 plotPosteriorN(weights, N)
 
 
@@ -86,5 +71,5 @@ function (weights, N)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ posterior distribution }
+\keyword{ model averaging }% __ONLY ONE__ keyword per line

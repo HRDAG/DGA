@@ -2,43 +2,29 @@
 \alias{CompLogML}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-A helper function for BMAfunction}
+Computes Marginal Likelihoods for Each Clique and Value of Nmissing}
 \description{
- This function computes the log marginal likelihood of each fully connected sub-graph of the $p$ lists.}
+ Assembles all of the pieces of the marginal likelihoods to be used to calculate the posterior probability of each model/value of Nmissing.}
 \usage{
 CompLogML(D, delta)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{D}{
-A marginal table of \code{Y}}
-  \item{delta}{
-The prior hyper parameter for  the Dirichlet distribution.}
+  \item{D}{A marginal table of the list overlap counts.}
+  \item{delta}{The prior hyper parameter for the Dirichlet distribution. This has been properly re-scaled in bma.cr so that all marginal tables have consistent priors.}
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 The log marginal likelihood of the marginal table.
 }
 \references{
 Madigan, David, and Jeremy C. York. "Bayesian methods for estimation of the size of a closed population."  Biometrika 84.1 (1997): 19-31.}
 \author{
-James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
-
-\note{
-%%  ~~further notes~~
+James Johndrow \email{james.johndrow@gmail.com} and Kristian Lum \email{kl@hrdag.org}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+
 
 ## The function is currently defined as
 function (D, delta) 
@@ -51,5 +37,5 @@ function (D, delta)
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{capture-recapture }
-\keyword{ multiple systems estimation}% __ONLY ONE__ keyword per line
-\keyword{ BMA }
+\keyword{multiple systems estimation}% __ONLY ONE__ keyword per line
+\keyword{BMA }

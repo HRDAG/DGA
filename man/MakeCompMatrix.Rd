@@ -2,11 +2,11 @@
 \alias{MakeCompMatrix}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Component-wise matrix of log marginal likelihoods}
+Component-wise Matrix of Log Marginal Likelihoods}
 \description{
 Calls CompLogML to create a matrix of number of possible components by length(Nmissing) log marginal likelihoods. Calculates the log marginal likehood of each possible marginal table for every value of Nmissing. }
 \usage{
-MakeCompMatrix(p, delta, Y)
+MakeCompMatrix(p, delta, Y, Nmissing)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -14,34 +14,20 @@ MakeCompMatrix(p, delta, Y)
 Number of lists}
   \item{delta}{
 Prior hyperparameter of the Dirichlet distribution.}
-  \item{Y}{
-The $2^k$ matrix of list intersection counts.}
+  \item{Y}{The \code{2^k} matrix of list intersection counts.}
+  \item{Nmissing}{
+  The vector of possible values for the missing cell. }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+
 \value{
 A matrix of log marginal likelihoods.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
-
-\note{
-%%  ~~further notes~~
+James Johndrow \email{james.johndrow@gmail.com} and Kristian Lum \email{kl@hrdag.org}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
 ## The function is currently defined as
 function (p, delta, Y) 
@@ -61,5 +47,5 @@ function (p, delta, Y)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ Bayesian model averaging}
+\keyword{ marginal likelihood }% __ONLY ONE__ keyword per line

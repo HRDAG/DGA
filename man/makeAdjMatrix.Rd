@@ -1,8 +1,7 @@
 \name{makeAdjMatrix}
 \alias{makeAdjMatrix}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Adjacency Matrix Converter}
+\title{Adjacency Matrix Converter}
 \description{
 Converts a cliques and separators into an adjacency matrix representation of a graph.}
 \usage{
@@ -10,39 +9,21 @@ makeAdjMatrix(graph, p)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{graph}{
-All the graphs.
-}
-  \item{p}{
-The number of lists.}
+  \item{graph}{All the graphs.}
+  \item{p}{The number of lists.}
 }
 \details{
 This is only a helper function to use in the experimental plotting function PlotTopGraphs.}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+an adjacency matrix
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-James Johndrow (james.johndrow@gmail.com) and Kristian Lum (kristianlum@gmail.com)}
-\note{
-%%  ~~further notes~~
+James Johndrow \email{james.johndrow@gmail.com} and Kristian Lum \email{kl@hrdag.org}
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+
 
 ## The function is currently defined as
 function (graph, p) 
@@ -68,5 +49,5 @@ function (graph, p)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ adjacency matrix}
+\keyword{ graph}% __ONLY ONE__ keyword per line
