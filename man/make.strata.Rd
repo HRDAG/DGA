@@ -1,0 +1,66 @@
+\name{make.strata}
+\alias{make.strata}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{Transforms Records to List Intersection Counts by Stratum}
+\description{
+Helps you to create list overlaps in the correct order to be used in bma.cr. This function also does some of the heavy lifting to stratify records by time (date, etc.) and other variables.}
+\usage{
+make.strata(overlaps, dates = NULL, locations = NULL, 
+            demographics = NULL, date.defs = "monthly", loc.defs = NULL, 
+            demog.defs = NULL, start.date = NULL, end.date = NULL)
+                                }
+\arguments{
+	 \item{overlaps}{a data frame that tells whether the i'th record appears on the j'th lists, where n is the total number of sampled elements and p is the number of lists. For example, if the [3,2] entry is 1, then the third element appeared on the second list. If it is zero, then the third element did NOT appear on the second list.}
+  	\item{dates}{ record dates. This must be a chron object. Do not include this if you don't want to stratify by time.}
+  	\item{locations}{ record locations, though unlike the dates, there is nothing special about the type that would prevent you from using any other variable type to stratify by here. Do not include this unless you want to stratify by the factor you include here.}
+  	\item{demographics}{ record demographic variables. Like locations, there is nothing specific to this that requires this be demographic. This should be a factor. Do not incude this unless you want to stratify by this factor.}
+  	\item{date.defs}{ how you'd like to stratify by date. This defaults to "monthly". Other options are "weekly", "daily", and "yearly". If you enter an integer (k) instead of one of these options, the data will be stratified into blocks of size k days.}
+  	\item{loc.defs}{How to divide up all of the levels of locations into groups. e.g. if locations has levels A, B, and C, and you'd like to stratify so that A and B are one strata and C is another, input loc.defs = list(g1 = c('A', 'B'), g2 = c('C')). If this is left as NULL, each level will be put into its own stratum.}
+  	\item{demog.defs}{ Similar to loc.defs. Same format. Including both just allows you to stratify along two dimensions. }
+  	\item{start.date}{ A  chron object of one date.  This gives the date of earliest record we want to include. If NULL, this defaults to the earliest record in the dataset.}
+  	\item{end.date}{a chron object of one date. This gives the date of the latest record to be included. If NULL, this defaults to the latest record in the dataset. This can only be included if dates are given.}
+  	
+}
+
+\value{
+\item{overlap.counts}{ a data frame where each row gives the list intersection counts that can be used in BMAfunction}
+\item{source.counts}{ a data frame that gives the total number of records by each data source and stratum. }
+}
+
+\author{
+Kristian Lum \email{kl@hrdag.org}
+}
+
+\examples{
+
+require(chron)
+	N <- 10000
+	overlaps <- data.frame(l1=rbinom(N, 1, .5), l2=rbinom(N, 1, .5), l3=rbinom(N, 1, .5))
+	dates <- paste(rep(2015, N), "-", sample(1:12, N, replace = TRUE), "-",
+     sample(1:28, N, replace = TRUE))
+	dates <- chron(dates, format=c(dates="y-m-d"))
+	locations <- sample(c("A", "B", "C", "D"), N, replace = TRUE)
+
+  # Aggregate only by week: 
+  make.strata(overlaps, dates, date.def = "weekly")
+  
+  # Aggregate by year and location, where locations are not grouped: 
+  make.strata(overlaps, dates, date.def = "yearly", locations)
+
+  # Aggregate by 2 day increments and location, where there are unique location levels
+  #       A, B, C, and D and locations A and B are in group 1 
+  #       and locations C and D are in group 2.
+  loc.defs <- list("g1" = c("A", "B"), "g2" = c("C", "D"))
+  make.strata(overlaps, dates, date.def = 2, locations, loc.defs = loc.defs)
+  # Aggregate by demographic (sex) only, where sex takes values M, F, A, NA, and U
+  #       and we would like to group these as M, F, and other.
+  sex <- sample(c("M", "F", "A", NA, "U"), prob=c(.4, .4, .1, .05, .05),
+         N, replace = TRUE)
+  demog.defs <- list("M" = "M", "F" = "F", "Other" = c("A", NA, "U"))
+  make.strata(overlaps, demographics = sex, demog.defs = demog.defs)
+
+}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{stratification}
+

@@ -1,0 +1,13 @@
+load("/Users/kristianlum/git/DGA/data/graphs3.rda")
+graphs
+graphs3 <- graphs
+save(graphs3, file = '~/git/DGA/data/graphs3.rda')
+load("/Users/kristianlum/git/DGA/data/graphs3.rda")
+graphs3
+graphs
+load("/Users/kristianlum/git/DGA/data/graphs4.rda")
+graphs4 <- graphs
+save(graphs4, file = '~/git/DGA/data/graphs4.rda')
+load("/Users/kristianlum/git/DGA/data/graphs5.rda")
+graphs5 <- graphs
+save(graphs5, file = '~/git/DGA/data/graphs5.rda')
