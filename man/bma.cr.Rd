@@ -7,11 +7,11 @@ Bayesiam Model Averaging for Capture-Recapture}
 \description{
 This function averages over all decomposable graphical models for p lists. }
 \usage{
-bma.cr(Y, Nmissing, delta, graphs, logprior = NULL, 
+bma.cr(Y, Nmissing, delta, graphs, logprior = NULL,
 		log.prior.model.weights, normalize)
 }
 \arguments{
-  	\item{Y}{a \code{2^p} array of list intersection counts. }
+  	\item{Y}{a \code{2^p} array of list intersection counts. See details.}
   	\item{Nmissing}{A vector of all possible values for the number of individuals that appear on no list.}
   	\item{delta}{The hyper-parameter for the hyper-Dirichlet prior distribution on list intersection probabilities. A smaller value indicates fewer prior observations per cell. A suggested default is \code{2^-p}}
   	\item{graphs}{A pre-computed list of all decomposable graphical models for \code{p} lists. These should be loaded using data(graphsp); see example. Currently, this package includes a list of graphs for three, four, or five lists. }
@@ -21,7 +21,11 @@ Prior weights on the graphs. This should be a vector of length length(graphs).	}
 	\item{normalize}{Default is TRUE. This is mostly for debugging. Should we normalize everything to output posterior probabilities?}
 }
 \details{
-This is the main function in this package.  It performs capture-recapture (or multiple systems estimation) using Bayesian model averaging as outlined in Madigan and York (1997).}
+This is the main function in this package.  It performs capture-recapture (or multiple systems estimation) using Bayesian model averaging as outlined in Madigan and York (1997).
+
+Y can be created by the array() command from a vector that is ordered lexigraphically by the cell names, e.g., c(x000, x001, x010, x011, x100, x101, x110, x111).
+
+}
 \value{
 This function returns a matrix of weights, where rows correspond to models and columns correspond to values of Nmissing. Thus, the \code{ij}th entry of the matrix is the posterior probability of the \code{i}th model and the \code{j}th entry of Nmissing. Row sums return posterior probabilities by model.Column sums return posterior probabilities by value of  Nmissing.}
 \references{
@@ -29,7 +33,7 @@ Madigan, David, and Jeremy C. York. "Bayesian methods for estimation of the size
 \author{
 James Johndrow \email{james.johndrow@gmail.com} and Kristian Lum (kl@hrdag.org)}
 \note{
-This function is pretty robust relative to the more common log-linear model approach to capture-recapture, i.e. it will not issue a numerical warning even if there are no overlaps among the lists. Care should be taken that there is adequate list overlap.
+This function is pretty robust relative to the more common log-linear model approach to capture-recapture. It will not fail (or issue a numerical warning) even if there are no overlaps among the lists. The user should take care that there is adequate list overlap and that there are sufficient cases in the stratum.
 }
 
 
@@ -43,7 +47,7 @@ N <- Nmissing + sum(Y)
 data(graphs5)
 weights <- bma.cr(Y,  Nmissing, delta, graphs5	)
 plotPosteriorN(weights, N)
- 
+
 ##### 3 list example from M & Y #######
 Y <- c(0, 60, 49, 4, 247, 112, 142, 12)
 Y <- array(Y, dim=c(2,2,2))
