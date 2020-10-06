@@ -1,0 +1,11 @@
+language: r
+cache: packages
+
+os:
+  - linux
+
+r:
+ - release
+
+repos:
+  CRAN: http://cloud.r-project.org

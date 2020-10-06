@@ -1,3 +1,5 @@
+.DS_Store
+
 # Images #
 ###################
 *.jpg
@@ -44,3 +46,4 @@ input/
 output/
 frozen/
 
+.Rproj.user
