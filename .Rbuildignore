@@ -2,6 +2,5 @@
 figures
 .travis.yml
 .github
-changes.md
 ^.*\.Rproj$
 ^\.Rproj\.user$
