@@ -1,14 +1,5 @@
 .DS_Store
 
-# Images #
-###################
-*.jpg
-*.jpeg
-*.png
-*.img
-*.tiff
-*.gif
-*.svg
 
 # Data #
 ##################
