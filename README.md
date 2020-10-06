@@ -8,6 +8,11 @@ DGA
 
 Performs capture-recapture estimation by averaging over decomposable graphical models. This implements the approach introduced in Madigan and York (1997).
 
+## Installation
+Stable CRAN release:
+```r
+install.packages("dga")
+```
 
 ## Example usage
 
