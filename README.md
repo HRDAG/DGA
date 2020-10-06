@@ -11,7 +11,7 @@ Performs capture-recapture estimation by averaging over decomposable graphical m
 
 ## Example usage
 
-Five lists example from Madigan and York (1997) as implemented in the `dga` package:
+Five lists example from Madigan and York (1997):
 
 ```r
 library(dga)

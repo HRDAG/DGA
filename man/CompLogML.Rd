@@ -7,13 +7,11 @@
 CompLogML(D, Nmissing, delta)
 }
 \arguments{
-\item{D}{A marginal table of the list overlap counts.}
+\item{D}{A marginal array of the list overlap counts.}
 
 \item{Nmissing}{The vector of possible values for the missing cell.}
 
-\item{delta}{The prior hyper parameter for the Dirichlet distribution. This
-has been properly re-scaled in bma.cr so that all marginal tables have
-consistent priors.}
+\item{delta}{The prior hyper parameter for the Dirichlet distribution.}
 }
 \value{
 The log marginal likelihood of the marginal table.
@@ -24,14 +22,13 @@ calculate the posterior probability of each model/value of Nmissing.
 }
 \examples{
 
-## The function is currently defined as
-function (D, delta)
-{
-    out <- apply(lgamma(D + delta), 1, sum) - apply(lgamma(D *
-        0 + delta), 1, sum)
-    return(out)
-  }
+Y <- c(0, 27, 37, 19, 4, 4, 1, 1, 97, 22, 37, 25, 2, 1, 3, 5, 83, 36, 34, 18, 3, 5, 0, 2, 30, 5, 23, 8, 0, 3, 0, 2)
+Y <- array(Y, dim = c(2, 2, 2, 2, 2))
 
+# Compute marginal array over lists 1 and 3
+D <- apply(Y, c(1, 3), sum)
+
+dga:::CompLogML(D, 1:300, 0.5)
 }
 \references{
 Madigan, David, and Jeremy C. York. "Bayesian methods for

@@ -34,10 +34,9 @@ b, and alpha.
 
 ## The function is currently defined as
 ps <- cbind(runif(100), runif(100))
-plot(dga:::ellipse(0,0,.5, .3, 0), type = 'l')
+plot(dga:::ellipse(0, 0, .5, .3, 0), type = "l")
 inds <- dga:::ellipse.ind(ps, 0, 0, .5, .3, 0)
 points(inds)
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

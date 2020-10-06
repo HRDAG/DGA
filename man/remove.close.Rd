@@ -29,8 +29,6 @@ the boundary of the circle defned by x, y, and r.
 
 ps <- cbind(runif(100), runif(100))
 inds <- dga:::remove.close(ps, .5, .5, .1)
-
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

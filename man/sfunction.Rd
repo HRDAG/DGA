@@ -21,10 +21,9 @@ columns.
 
 
 ## The function is currently defined as
-sfunction <- function(x){
+sfunction <- function(x) {
   out <- apply(x, 2, sum)
 }
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

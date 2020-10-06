@@ -26,8 +26,7 @@ Draws the ellipses used in venn4.
 \examples{
 
 
-plot(dga:::ellipse(0,0,.5, .2, 1))
-
+plot(dga:::ellipse(0, 0, .5, .2, 1))
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

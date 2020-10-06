@@ -19,6 +19,7 @@
 - Add `ByteCompile: yes`
 - Add Rcpp to Imports 
 - Add `LinkingTo: Rcpp, RcppArmadillo`
+- Add `Suggests: testthat`
 
 
 ### Documentation

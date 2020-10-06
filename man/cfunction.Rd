@@ -21,10 +21,9 @@ A helper function used in make.strata to make list overlap counts.
 
 
 ## The function is currently defined as
-cfunction <- function(x, nlist){
-  out <- table(c(x, 0:(2^nlist-1)))-1
+cfunction <- function(x, nlist) {
+  out <- table(c(x, 0:(2^nlist - 1))) - 1
 }
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

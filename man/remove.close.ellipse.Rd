@@ -32,8 +32,6 @@ A helper function.
 ## The function is currently defined as
 ps <- cbind(runif(100), runif(100))
 inds <- dga:::remove.close.ellipse(ps, .5, .5, .1, .3, 1)
-
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

@@ -28,10 +28,9 @@ circle.
 
 
 ps <- cbind(runif(100), runif(100))
-plot(dga:::circle(0,0,1), type = 'l')
+plot(dga:::circle(0, 0, 1), type = "l")
 inds <- dga:::circle.ind(ps, 0, 0, 1)
 points(inds)
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

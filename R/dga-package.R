@@ -23,7 +23,7 @@
 #' averaging
 #' @examples
 #'
-#' ### This simualated example goes through the whole process for 3 lists.###
+#' ### This simulated example goes through the whole process for 3 lists.###
 #' library(chron)
 #' # Simulate some data
 #' N <- 1000 # true population size

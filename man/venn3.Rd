@@ -46,7 +46,6 @@ each region for each record that falls into the corresponding list overlap.
 
 overlap.counts <- rpois(8, 30)
 venn3(overlap.counts, main = "example diagram")
-
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}

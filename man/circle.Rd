@@ -24,8 +24,7 @@ plotted to make circles for a venn diagram.
 \examples{
 
 
-plot(dga:::circle(0,0,1), type = 'l')
-
+plot(dga:::circle(0, 0, 1), type = "l")
 }
 \author{
 Kristian Lum \email{kl@hrdag.org}
