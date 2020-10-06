@@ -4,11 +4,10 @@
 #' calculate the posterior probability of each model/value of Nmissing.
 #'
 #'
-#' @param D A marginal table of the list overlap counts.
+#' @param D A marginal array of the list overlap counts.
 #' @param Nmissing The vector of possible values for the missing cell.
-#' @param delta The prior hyper parameter for the Dirichlet distribution. This
-#' has been properly re-scaled in bma.cr so that all marginal tables have
-#' consistent priors.
+#' @param delta The prior hyper parameter for the Dirichlet distribution.
+#'
 #' @return The log marginal likelihood of the marginal table.
 #' @author James Johndrow \email{james.johndrow@@gmail.com} and Kristian Lum
 #' \email{kl@@hrdag.org}
@@ -19,19 +18,21 @@
 #'
 #' @examples
 #'
-#' ## The function is currently defined as
-#' function (D, delta)
-#' {
-#'     out <- apply(lgamma(D + delta), 1, sum) - apply(lgamma(D *
-#'         0 + delta), 1, sum)
-#'     return(out)
-#'   }
+#' Y <- c(0, 27, 37, 19, 4, 4, 1, 1, 97, 22, 37, 25, 2, 1, 3, 5, 83, 36, 34, 18, 3, 5, 0, 2, 30, 5, 23, 8, 0, 3, 0, 2)
+#' Y <- array(Y, dim = c(2, 2, 2, 2, 2))
 #'
+#' # Compute marginal array over lists 1 and 3
+#' D <- apply(Y, c(1, 3), sum)
+#'
+#' dga:::CompLogML(D, 1:300, 0.5)
 CompLogML <- function(D, Nmissing, delta) {
   Nmissing <- Nmissing + D[1] + delta
-  lgamma(Nmissing) + sum(lgamma(D[2:length(D)] + delta)) - length(D)*(lgamma(delta))
+  return(
+    lgamma(Nmissing) +
+      sum(lgamma(D[2:length(D)] + delta)) -
+      length(D) * (lgamma(delta))
+  )
 }
-
 
 
 
@@ -49,43 +50,21 @@ CompLogML <- function(D, Nmissing, delta) {
 #' @author Spencer Graves
 #' @references https://stat.ethz.ch/pipermail/r-help/2003-September/038978.html
 #' @keywords binary decimal
-#' @examples
-#'
-#'
-#'
-#' ## The function is currently defined as
-#' function (x, b = 2)
-#' {
-#'     xi <- as.integer(x)
-#'     if (any(is.na(xi) | ((x - xi) != 0)))
-#'         print(list(ERROR = "x not integer", x = x))
-#'     N <- length(x)
-#'     xMax <- max(x)
-#'     ndigits <- (floor(logb(xMax, base = 2)) + 1)
-#'     Base.b <- array(NA, dim = c(N, ndigits))
-#'     for (i in 1:ndigits) {
-#'         Base.b[, ndigits - i + 1] <- (x%%b)
-#'         x <- (x%/%b)
-#'     }
-#'     if (N == 1)
-#'         Base.b[1, ]
-#'     else Base.b
-#'   }
-#'
-integer.base.b <- function(x, b=2){
-    xi <- as.integer(x)
-    if(any(is.na(xi) | ((x-xi)!=0)))
-      print(list(ERROR="x not integer", x=x))
-    N <- length(x)
-    xMax <- max(x)
-    ndigits <- (floor(logb(xMax, base=2))+1)
-    Base.b <- array(NA, dim=c(N, ndigits))
-    for(i in 1:ndigits){#i <- 1
-      Base.b[, ndigits-i+1] <- (x %% b)
-      x <- (x %/% b)
-    }
-    if(N ==1) Base.b[1, ] else Base.b
+integer.base.b <- function(x, b = 2) {
+  xi <- as.integer(x)
+  if (any(is.na(xi) | ((x - xi) != 0))) {
+    print(list(ERROR = "x not integer", x = x))
   }
+  N <- length(x)
+  xMax <- max(x)
+  ndigits <- (floor(logb(xMax, base = 2)) + 1)
+  Base.b <- array(NA, dim = c(N, ndigits))
+  for (i in 1:ndigits) {
+    Base.b[, ndigits - i + 1] <- (x %% b)
+    x <- (x %/% b)
+  }
+  if (N == 1) Base.b[1, ] else Base.b
+}
 
 
 
@@ -104,35 +83,19 @@ integer.base.b <- function(x, b=2){
 #' @author James Johndrow \email{james.johndrow@@gmail.com} and Kristian Lum
 #' \email{kl@@hrdag.org}
 #' @keywords Bayesian model averaging marginal likelihood
-#' @examples
 #'
-#'
-#' ## The function is currently defined as
-#' function (p, delta, Y)
-#' {
-#'     compLMLs <- matrix(0, nrow = 2^p - 1, ncol = length(Nmissing))
-#'     bins <- integer.base.b(1:(2^p - 1), 2)
-#'     for (i in 1:(2^p - 1)) {
-#'         inds <- which(bins[i, ] == 1)
-#'         D <- c(apply(Y, inds, sum))
-#'         Dmat <- t(matrix(D, ncol = length(Nmissing), nrow = length(D)))
-#'         Dmat[, 1] <- Dmat[, 1] + Nmissing
-#'         alpha <- rep(delta * 2^(p - sum(bins[i, ])), ncol(Dmat))
-#'         compLMLs[i, ] <- CompLogML(Dmat, alpha)
-#'     }
-#'     return(compLMLs)
-#'   }
-#'
-MakeCompMatrix <- function(p, delta, Y, Nmissing){
+MakeCompMatrix <- function(p, delta, Y, Nmissing) {
   compLMLs <- matrix(0, nrow = 2^p - 1, ncol = length(Nmissing))
   bins <- integer.base.b(1:(2^p - 1), 2)
   for (i in 1:(2^p - 1)) {
     inds <- which(bins[i, ] == 1)
     D <- c(apply(Y, inds, sum))
-    compLMLs[i, ] <- CompLogML(D, Nmissing, delta * 2^(p - sum(bins[i,])))
+    compLMLs[i, ] <- CompLogML(D, Nmissing, delta * 2^(p - sum(bins[i, ])))
   }
   return(compLMLs)
 }
+
+
 
 #' Bayesiam Model Averaging for Capture-Recapture
 #'
@@ -180,17 +143,17 @@ MakeCompMatrix <- function(p, delta, Y, Nmissing){
 #'
 #' #### 5 list example from M & Y ##########
 #' delta <- .5
-#' Y = c(0,27,37,19,4,4,1,1,97,22,37,25,2,1,3,5,83,36,34,18,3,5,0,2,30,5,23,8,0,3,0,2)
-#' Y <- array(Y, dim=c(2,2,2,2,2))
+#' Y <- c(0, 27, 37, 19, 4, 4, 1, 1, 97, 22, 37, 25, 2, 1, 3, 5, 83, 36, 34, 18, 3, 5, 0, 2, 30, 5, 23, 8, 0, 3, 0, 2)
+#' Y <- array(Y, dim = c(2, 2, 2, 2, 2))
 #' Nmissing <- 1:300
 #' N <- Nmissing + sum(Y)
 #' data(graphs5)
-#' weights <- bma.cr(Y,  Nmissing, delta, graphs5	)
+#' weights <- bma.cr(Y, Nmissing, delta, graphs5)
 #' plotPosteriorN(weights, N)
 #'
 #' ##### 3 list example from M & Y #######
 #' Y <- c(0, 60, 49, 4, 247, 112, 142, 12)
-#' Y <- array(Y, dim=c(2,2,2))
+#' Y <- array(Y, dim = c(2, 2, 2))
 #'
 #' delta <- 1
 #' a <- 13.14
@@ -200,12 +163,11 @@ MakeCompMatrix <- function(p, delta, Y, Nmissing){
 #' Nmissing <- 1:300
 #' N <- Nmissing + sum(Y)
 #'
-#' logprior <- N*log(b) - (N + a)*log(1 + b)  + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
+#' logprior <- N * log(b) - (N + a) * log(1 + b) + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
 #'
 #' data(graphs3)
-#' weights <- bma.cr(Y,  Nmissing, delta, graphs3, logprior)
+#' weights <- bma.cr(Y, Nmissing, delta, graphs3, logprior)
 #' plotPosteriorN(weights, N)
-#'
 #' @export
 bma.cr <- function(Y, Nmissing, delta, graphs,
                    logprior = NULL,
@@ -216,11 +178,10 @@ bma.cr <- function(Y, Nmissing, delta, graphs,
 
   Y[1] <- 0
   p <- length(dim(Y))
-  alpha <- rep(delta, length(Y))
 
   # Precomputations
   compMat <- MakeCompMatrix(p, delta, Y, Nmissing)
-  D <- lgamma(sum(alpha)) - lgamma(Nmissing + sum(Y) + sum(alpha))
+  D <- lgamma(length(Y) * (delta)) - lgamma(Nmissing + sum(Y) + length(Y) * (delta))
   multinomialCoefficient <- lgamma(Nmissing + sum(Y) + 1) - sum(lgamma(Y[-1] + 1)) - lgamma(Nmissing + 1)
 
   # Compute log posterior for all models
@@ -234,6 +195,7 @@ bma.cr <- function(Y, Nmissing, delta, graphs,
 
   return(weights)
 }
+
 
 
 #' Plots Posterior Distribution of Nmissing
@@ -256,18 +218,18 @@ bma.cr <- function(Y, Nmissing, delta, graphs,
 #' ##### 5 list example from M & Y #######
 #'
 #' delta <- .5
-#' Y = c(0,27,37,19,4,4,1,1,97,22,37,25,2,1,3,5,83,36,34,18,3,5,0,2,30,5,23,8,0,3,0,2)
-#' Y <- array(Y, dim=c(2,2,2,2,2))
+#' Y <- c(0, 27, 37, 19, 4, 4, 1, 1, 97, 22, 37, 25, 2, 1, 3, 5, 83, 36, 34, 18, 3, 5, 0, 2, 30, 5, 23, 8, 0, 3, 0, 2)
+#' Y <- array(Y, dim = c(2, 2, 2, 2, 2))
 #' Nmissing <- 1:300
 #' N <- Nmissing + sum(Y)
 #' data(graphs5)
-#' weights <- bma.cr(Y,  Nmissing, delta, graphs5)
+#' weights <- bma.cr(Y, Nmissing, delta, graphs5)
 #' plotPosteriorN(weights, N)
 #'
 #'
 #' ##### 3 list example from M & Y #######
 #' Y <- c(0, 60, 49, 4, 247, 112, 142, 12)
-#' Y <- array(Y, dim=c(2,2,2))
+#' Y <- array(Y, dim = c(2, 2, 2))
 #'
 #' delta <- 1
 #' a <- 13.14
@@ -277,40 +239,29 @@ bma.cr <- function(Y, Nmissing, delta, graphs,
 #' Nmissing <- 1:300
 #' N <- Nmissing + sum(Y)
 #'
-#' logprior <- N*log(b) - (N + a)*log(1 + b)  + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
+#' logprior <- N * log(b) - (N + a) * log(1 + b) + lgamma(N + a) - lgamma(N + 1) - lgamma(a)
 #'
 #' data(graphs3)
-#' weights <- bma.cr(Y,  Nmissing, delta, graphs3, logprior)
+#' weights <- bma.cr(Y, Nmissing, delta, graphs3, logprior)
 #' plotPosteriorN(weights, N)
-#'
-#'
-#' ## The function is currently defined as
-#' function (weights, N)
-#' {
-#'     plot(N, apply(weights, 2, sum), type = "l", col = "black",
-#'         lwd = 3, ylab = "Posterior Probability of N", xlab = "N",
-#'         ylim = c(0, 1.25 * max(apply(weights, 2, sum))))
-#'     title("Posterior Summary")
-#'     wts <- apply(weights, 1, sum)
-#'     for (i in 1:nrow(weights)) {
-#'         lines(Nmissing + sum(Y), weights[i, ], lwd = wts[i] *
-#'             3, lty = "dashed")
-#'     }
-#'     legend("topright", legend = c("Total Posterior Probability",
-#'         "One Model's Posterior Probability"), lty = c(1, 2),
-#'         cex = 0.75)
-#'   }
-#'
 #' @import graphics
 #' @export
-plotPosteriorN <- function(weights, N, main=NULL){
-  #this function
-  graphics::plot(N, apply(weights, 2, sum), type = 'l', col = 'black', lwd = 3, ylab = "Posterior Probability of N", xlab = "N", ylim=c(0, 1.25*max(apply(weights, 2, sum))))
+plotPosteriorN <- function(weights, N, main = NULL) {
+  graphics::plot(N, apply(weights, 2, sum),
+    type = "l", col = "black", lwd = 3,
+    ylab = "Posterior Probability of N",
+    xlab = "N",
+    ylim = c(0, 1.25 * max(apply(weights, 2, sum)))
+  )
   graphics::title(main)
-  wts <- apply(weights, 1, sum)
-  for(i in 1:nrow(weights)){
-    graphics::lines(N, weights[i,], lwd = wts[i]*3, lty = 'dashed')
-  }
-  graphics::legend("topright", legend = c("Averaged Post. Prob.", "Post. Prob. By Model"), lty  = c(1, 2), cex = .75)
-}
 
+  wts <- apply(weights, 1, sum)
+  for (i in 1:nrow(weights)) {
+    graphics::lines(N, weights[i, ], lwd = wts[i] * 3, lty = "dashed")
+  }
+
+  graphics::legend("topright",
+    legend = c("Averaged Post. Prob.", "Post. Prob. By Model"),
+    lty = c(1, 2), cex = .75
+  )
+}

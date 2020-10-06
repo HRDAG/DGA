@@ -49,10 +49,4 @@ adjMat = function(graph, p) {
 
 - Modified the `MakeCompMatrix` function to be more efficient in combination with `CompLogML`. This was one of the main bottlenecks together with the main graphs loop.
   
-## Performance tips
-
-- `rowSums` and `colSums` is much faster than `apply(., 1, sum)` and `apply(., 2, sum)`.
-- R doesn't work efficiently with matrices. Things such as `t(t(mat) + vect)` to add a vector to rows can be a bit costly. Creating new matrices as part of data manipulation should be avoided.
-
-
 
