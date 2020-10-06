@@ -10,7 +10,7 @@ consideration. This consists of graphs3[[i]]$C, all of the cliques in that
 model, and graphs3[[i]]$S, the separators.
 }
 \usage{
-graphs3
+data(graphs3)
 }
 \description{
 This dataset contains all of the cliques and separators for each of the
