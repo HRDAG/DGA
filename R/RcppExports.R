@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 computeLogPostProbs <- function(compMat, graphs, denominator, p) {
-    .Call('_dga_computeLogPostProbs', PACKAGE = 'dga', compMat, graphs, denominator, p)
+    .Call(`_dga_computeLogPostProbs`, compMat, graphs, denominator, p)
 }
 
 rowAdd <- function(mat, v) {
-    invisible(.Call('_dga_rowAdd', PACKAGE = 'dga', mat, v))
+    invisible(.Call(`_dga_rowAdd`, mat, v))
 }
 
 colAdd <- function(mat, v) {
-    invisible(.Call('_dga_colAdd', PACKAGE = 'dga', mat, v))
+    invisible(.Call(`_dga_colAdd`, mat, v))
 }
 
 expNormalize <- function(mat) {
-    invisible(.Call('_dga_expNormalize', PACKAGE = 'dga', mat))
+    invisible(.Call(`_dga_expNormalize`, mat))
 }
 

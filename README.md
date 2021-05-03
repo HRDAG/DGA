@@ -1,6 +1,4 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/dga)](https://cran.r-project.org/package=dga)
-[![](https://cranlogs.r-pkg.org/badges/dga)](https://cran.r-project.org/package=dga)
-[![Build Status](https://travis-ci.com/OlivierBinette/DGA.svg?branch=master)](https://travis-ci.com/OlivierBinette/DGA)
 [![R-CMD-check](https://github.com/OlivierBinette/DGA/workflows/R-CMD-check/badge.svg)](https://github.com/OlivierBinette/DGA/actions?query=workflow%3AR-CMD-check)
 
 DGA

@@ -4,3 +4,5 @@ figures
 .github
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^cran-comments\.md$
+^NEWS\.md$
