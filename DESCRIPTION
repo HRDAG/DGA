@@ -1,7 +1,7 @@
 Package: dga
 Type: Package
 Title: Capture-Recapture Estimation using Bayesian Model Averaging
-Version: 2.0.0
+Version: 2.0.1
 Date: 2021-05-04
 Authors@R: c(person(given="James", family="Johndrow", role=c("aut")),
              person(given="Kristian", family="Lum", email="kl@hrdag.org", role=c("aut")),

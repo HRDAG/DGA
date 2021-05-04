@@ -10,7 +10,7 @@ arma::rowvec colSumsSub(const arma::mat& mat,
 double dec(const Rcpp::IntegerVector I, int p) {
   double s = 0;
   for (int i = 0; i < I.size(); i++) {
-    s += pow(2, p - I(i));
+    s += pow(2.0, p - I(i));
   }
   return s;
 }
