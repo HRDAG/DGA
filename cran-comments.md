@@ -11,13 +11,14 @@
 
 There were no ERRORs, no WARNINGs, and two NOTEs:
 
-* NOTE
-  Maintainer: ‘Olivier Binette <olivier.binette@gmail.com>’
-  
-  New maintainer:
-    Olivier Binette <olivier.binette@gmail.com>
-  Old maintainer(s):
-    Kristian Lum <kl@hrdag.org>
+*NOTE
+  checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Olivier Binette <olivier.binette@gmail.com>'
+  Days since last update: 0
 
 * NOTE
   unable to verify current time
+  
+## Explanation
+
+* Attempting to fix an installation error with CRAN checks on r-patched-solaris-x86
