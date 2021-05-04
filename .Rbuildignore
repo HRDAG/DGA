@@ -5,5 +5,4 @@ figures
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^cran-comments\.md$
-^NEWS\.md$
 ^\.github$
