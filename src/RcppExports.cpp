@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // computeLogPostProbs
 arma::mat computeLogPostProbs(const arma::mat& compMat, const Rcpp::List& graphs, const arma::rowvec& denominator, int p);
 RcppExport SEXP _dga_computeLogPostProbs(SEXP compMatSEXP, SEXP graphsSEXP, SEXP denominatorSEXP, SEXP pSEXP) {
