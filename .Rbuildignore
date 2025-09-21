@@ -6,3 +6,4 @@ figures
 ^\.Rproj\.user$
 ^cran-comments\.md$
 ^\.github$
+^CRAN-SUBMISSION$
